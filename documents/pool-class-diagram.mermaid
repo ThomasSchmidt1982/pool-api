@@ -1,0 +1,79 @@
+classDiagram
+    direction TB
+
+    %% ─── Personnes ───
+    class Person {
+        <<abstract>>
+        +Long id
+        +String lastname
+        +String firstname
+        +String email
+        +String phone
+        +String password
+        +boolean isActive
+        +boolean isAdmin
+    }
+
+    class User {
+    }
+
+    class Employee {
+    }
+
+    Person <|-- User : extends
+    Person <|-- Employee : extends
+
+    %% ─── Abonnements ───
+    class SubscriptionKind {
+        +Long id
+        +String name
+        +Integer durationDays
+        +Double price
+    }
+
+    class Subscription {
+        +Long id
+        +Date purchaseDate
+        +Date expirationDate
+    }
+
+    User "1" *-- "0..*" Subscription : possède
+    Subscription "0..*" --> "1" SubscriptionKind : est de type
+
+    %% ─── Tickets ───
+    class TicketKind {
+        +Long id
+        +String name
+        +Double price
+    }
+
+    class Ticket {
+        +Long id
+        +Date purchaseDate
+        +Date usingDate
+    }
+
+    User "1" *-- "0..*" Ticket : possède
+    Ticket "0..*" --> "1" TicketKind : est de type
+
+    %% ─── Accès ───
+    class Pool {
+        +Long id
+        +Integer maxCapacity
+    }
+
+    class Access {
+        +Long id
+        +Date timestamp
+        +InOut inOut
+    }
+
+    class InOut {
+        <<enumeration>>
+        ENTRY
+        EXIT
+    }
+
+    User "1" *-- "0..*" Access : génère
+    Access "0..*" --> "1" Pool : concerne
+    Access --> InOut
