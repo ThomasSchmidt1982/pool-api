@@ -58,7 +58,7 @@ public class UserService {
     }
 
     // DELETE /users/:id (soft delete)
-    public void desactivate(Long id){
+    public void deactivate(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setActive(false);
