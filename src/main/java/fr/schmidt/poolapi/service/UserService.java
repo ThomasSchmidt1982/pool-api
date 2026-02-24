@@ -40,7 +40,7 @@ public class UserService {
         user.setPassword(userRequest.password()); // TODO à hasher plus tard
         user.setAdmin(userRequest.isAdmin());
         user.setActive(userRequest.isActive());
-        // sauvegarde en bdd et retourne la réponse
+        // sauvegarde en BDD et retourne la réponse
         return toResponse(userRepository.save(user));
     }
 
