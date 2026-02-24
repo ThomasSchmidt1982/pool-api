@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,9 +22,9 @@ public class Ticket {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDateTime purchaseDate;
+    private LocalDate purchaseDate;
 
-    private LocalDateTime usingDate;
+    private LocalDate usingDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

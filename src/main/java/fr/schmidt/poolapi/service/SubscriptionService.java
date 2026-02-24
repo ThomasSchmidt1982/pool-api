@@ -65,8 +65,8 @@ public class SubscriptionService {
 
     // GET /users/:id/subscriptions
     // Retourne tous les abonnements d'un user
-    public List<SubscriptionResponse> findByUserId(Long userId) {
-        return subscriptionRepository.findByUserId(userId)
+    public List<SubscriptionResponse> findByUserId(Long id) {
+        return subscriptionRepository.findByUserId(id)
                 .stream()
                 .map(subscription -> toResponse(subscription))
                 .toList();
