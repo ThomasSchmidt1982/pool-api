@@ -5,3 +5,5 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=true
 spring.jpa.open-in-view=false
+jwt.secret= une clef secrete de 256 bits
+jwt.expiration= une durée en millisecondes
