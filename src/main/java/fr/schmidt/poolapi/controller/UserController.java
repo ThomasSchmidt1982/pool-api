@@ -3,7 +3,6 @@ package fr.schmidt.poolapi.controller;
 import fr.schmidt.poolapi.dto.request.UserRequest;
 import fr.schmidt.poolapi.dto.response.UserResponse;
 import fr.schmidt.poolapi.service.UserService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
