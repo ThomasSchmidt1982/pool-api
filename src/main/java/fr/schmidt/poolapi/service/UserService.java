@@ -5,6 +5,7 @@ import fr.schmidt.poolapi.dto.response.UserResponse;
 import fr.schmidt.poolapi.model.entity.User;
 import fr.schmidt.poolapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class UserService {
 
     // injection de dépendance
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // GET /users
     public List<UserResponse> findAll() {
@@ -37,7 +39,7 @@ public class UserService {
         user.setLastname(userRequest.lastname());
         user.setFirstname(userRequest.firstname());
         user.setEmail(userRequest.email());
-        user.setPassword(userRequest.password()); // TODO à hasher plus tard
+        user.setPassword(passwordEncoder.encode(userRequest.password()));
         user.setAdmin(userRequest.isAdmin());
         user.setActive(userRequest.isActive());
         // sauvegarde en BDD et retourne la réponse

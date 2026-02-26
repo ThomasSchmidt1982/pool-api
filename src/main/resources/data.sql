@@ -1,0 +1,2 @@
+INSERT INTO users (id, firstname, lastname, email, password, phone, is_admin, is_active)
+VALUES (nextval('person_sequence'), 'Jean', 'Dupont', 'jean.dupont@mail.com', '$2a$12$rQIjbCPbCgG0aIm49iloe.AFJoDb8xCHosWDajN0dmqRf3rs3f8T6', null, true, true);
