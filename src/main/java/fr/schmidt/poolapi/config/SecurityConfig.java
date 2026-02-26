@@ -5,6 +5,7 @@ import fr.schmidt.poolapi.service.PersonDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -33,7 +34,29 @@ public class SecurityConfig {
                 // routes publiques
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        // routes privées nécessitant token
+
+                        // Admin seulement
+                        .requestMatchers(HttpMethod.POST, "/employees").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/employees/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/employees/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/employees/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/subscriptions/kinds").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/tickets/kinds").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/pool").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/pool/status").hasRole("ADMIN")
+
+                        // Admin + Employee
+                        .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.POST, "/users").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.PUT, "/users/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET, "/access").hasAnyRole("ADMIN", "EMPLOYEE")
+
+                        // Tous les authentifiés (càd avec token)
+                        .requestMatchers(HttpMethod.GET, "/subscriptions/kinds").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/tickets/kinds").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/access/entry/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/access/exit/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 // pas de session HTTP - chaque requête est indépendante
