@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import fr.schmidt.poolapi.model.entity.*;
 import fr.schmidt.poolapi.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,9 @@ import java.util.Locale;
 @Component
 @RequiredArgsConstructor
 public class DataSeeder implements ApplicationRunner {
+
+    @Value("${app.seeder.password}")
+    private String seederPassword;
 
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
@@ -55,7 +59,7 @@ public class DataSeeder implements ApplicationRunner {
             user.setLastname(faker.name().lastName());
             user.setEmail(faker.internet().emailAddress());
             user.setPhone(faker.phoneNumber().cellPhone());
-            user.setPassword(passwordEncoder.encode("motdepasse123"));
+            user.setPassword(passwordEncoder.encode(seederPassword));
             user.setAdmin(false);
             user.setActive(faker.bool().bool());
             userRepository.save(user);
@@ -68,7 +72,7 @@ public class DataSeeder implements ApplicationRunner {
             employee.setLastname(faker.name().lastName());
             employee.setEmail(faker.internet().emailAddress());
             employee.setPhone(faker.phoneNumber().cellPhone());
-            employee.setPassword(passwordEncoder.encode("motdepasse123"));
+            employee.setPassword(passwordEncoder.encode(seederPassword));
             employee.setAdmin(false);
             employee.setActive(faker.bool().bool());
             employeeRepository.save(employee);
@@ -79,7 +83,7 @@ public class DataSeeder implements ApplicationRunner {
         admin.setFirstname("Jean");
         admin.setLastname("Dupont");
         admin.setEmail("jean.dupont@mail.com");
-        admin.setPassword(passwordEncoder.encode("motdepasse123"));
+        admin.setPassword(passwordEncoder.encode(seederPassword));
         admin.setAdmin(true);
         admin.setActive(true);
         userRepository.save(admin);
