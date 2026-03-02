@@ -5,6 +5,8 @@ import fr.schmidt.poolapi.dto.response.AccessResponse;
 import fr.schmidt.poolapi.service.AccessService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +20,18 @@ public class AccessController {
     private final AccessService accessService;
 
     @GetMapping
-    public List<AccessResponse> findAll(){
-        return accessService.findAll();
+    public ResponseEntity<List<AccessResponse>> findAll(){
+        return ResponseEntity.ok(accessService.findAll());
     }
 
     @PostMapping("/entry/{userId}")
-    public AccessResponse entry(@PathVariable Long userId, @Valid @RequestBody AccessRequest request){
-        return accessService.entry(userId, request);
+    public ResponseEntity<AccessResponse> entry(@PathVariable Long userId, @Valid @RequestBody AccessRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(accessService.entry(userId, request));
     }
 
     @PostMapping("/exit/{userId}")
-    public AccessResponse exit(@PathVariable Long userId, @Valid @RequestBody AccessRequest request){
-        return accessService.exit(userId, request);
+    public ResponseEntity<AccessResponse> exit(@PathVariable Long userId, @Valid @RequestBody AccessRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(accessService.exit(userId, request));
     }
 
 }

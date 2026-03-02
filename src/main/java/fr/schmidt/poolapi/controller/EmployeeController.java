@@ -5,6 +5,8 @@ import fr.schmidt.poolapi.dto.response.EmployeeResponse;
 import fr.schmidt.poolapi.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,27 +20,28 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping
-    public List<EmployeeResponse> findAll(){
-        return employeeService.findAll();
+    public ResponseEntity<List<EmployeeResponse>> findAll(){
+        return ResponseEntity.ok(employeeService.findAll());
     }
 
     @GetMapping("/{id}")
-    public EmployeeResponse findById(@PathVariable Long id){
-        return employeeService.findById(id);
+    public ResponseEntity<EmployeeResponse> findById(@PathVariable Long id){
+        return ResponseEntity.ok(employeeService.findById(id));
     }
 
     @PostMapping
-    public EmployeeResponse create(@Valid @RequestBody EmployeeRequest request){
-        return employeeService.create(request);
+    public ResponseEntity<EmployeeResponse> create(@Valid @RequestBody EmployeeRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.create(request));
     }
 
     @PutMapping("/{id}")
-    public EmployeeResponse update(@PathVariable Long id, @Valid @RequestBody EmployeeRequest request){
-        return employeeService.update(id, request);
+    public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @Valid @RequestBody EmployeeRequest request){
+        return ResponseEntity.ok(employeeService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public void deactivate(@PathVariable Long id){
+    public ResponseEntity<Void> deactivate(@PathVariable Long id){
         employeeService.desactivate(id);
+        return ResponseEntity.noContent().build();
     }
 }

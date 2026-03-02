@@ -5,6 +5,8 @@ import fr.schmidt.poolapi.dto.response.TicketResponse;
 import fr.schmidt.poolapi.service.TicketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +18,12 @@ public class TicketController {
     private final TicketService ticketService;
 
     @GetMapping
-    public List<TicketResponse> findByUserId(@PathVariable Long id){
-        return ticketService.findByUserId(id);
+    public ResponseEntity<List<TicketResponse>> findByUserId(@PathVariable Long id){
+        return ResponseEntity.ok(ticketService.findByUserId(id));
     }
 
     @PostMapping
-    public TicketResponse create(@PathVariable Long id, @Valid @RequestBody TicketRequest request){
-        return ticketService.create(id, request );
+    public ResponseEntity<TicketResponse> create(@PathVariable Long id, @Valid @RequestBody TicketRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.create(id, request ));
     }
 }

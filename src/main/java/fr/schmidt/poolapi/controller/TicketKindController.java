@@ -5,6 +5,8 @@ import fr.schmidt.poolapi.dto.response.TicketKindResponse;
 import fr.schmidt.poolapi.service.TicketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,13 +19,13 @@ public class TicketKindController {
     private final TicketService ticketService;
 
     @GetMapping
-    public List<TicketKindResponse> findAllKind() {
-        return ticketService.findAllKinds();
+    public ResponseEntity<List<TicketKindResponse>> findAllKind() {
+        return ResponseEntity.ok(ticketService.findAllKinds());
     }
 
     @PostMapping
-    public TicketKindResponse createKind(@Valid @RequestBody TicketKindRequest request) {
-        return ticketService.createKind(request);
+    public ResponseEntity<TicketKindResponse> createKind(@Valid @RequestBody TicketKindRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.createKind(request));
     }
 
 }

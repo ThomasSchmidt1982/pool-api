@@ -6,6 +6,8 @@ import fr.schmidt.poolapi.security.JwtService;
 import fr.schmidt.poolapi.service.PersonDetailsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +26,7 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public AuthResponse login(@Valid @RequestBody AuthRequest request){
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request){
         // Vérif de l'email + password
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
@@ -33,7 +35,7 @@ public class AuthController {
         UserDetails userDetails = personDetailsService.loadUserByUsername(request.email());
         // génération et retour du token
         String token = jwtService.generateToken(userDetails);
-        return new AuthResponse(token);
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 
 }
