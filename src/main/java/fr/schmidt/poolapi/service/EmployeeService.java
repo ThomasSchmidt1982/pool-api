@@ -2,6 +2,7 @@ package fr.schmidt.poolapi.service;
 
 import fr.schmidt.poolapi.dto.request.EmployeeRequest;
 import fr.schmidt.poolapi.dto.response.EmployeeResponse;
+import fr.schmidt.poolapi.exception.ResourceNotFoundException;
 import fr.schmidt.poolapi.model.entity.Employee;
 import fr.schmidt.poolapi.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class EmployeeService {
     // GET /employees/:id
     public EmployeeResponse findById(Long id){
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException(" Employee not found"));
+                .orElseThrow(()-> new ResourceNotFoundException(" Employee not found"));
         return toResponse(employee);
     }
 
@@ -49,7 +50,7 @@ public class EmployeeService {
     // PUT /employees/:id
     public EmployeeResponse update(Long id, EmployeeRequest employeeRequest){
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee Not Found"));
         employee.setLastname(employeeRequest.lastname());
         employee.setFirstname(employeeRequest.firstname());
         employee.setEmail(employeeRequest.email());
@@ -62,7 +63,7 @@ public class EmployeeService {
     // DELETE /employees/:id (soft delete)
     public void desactivate(Long id){
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee Not Found"));
         employee.setActive(false);
         employeeRepository.save(employee);
     }

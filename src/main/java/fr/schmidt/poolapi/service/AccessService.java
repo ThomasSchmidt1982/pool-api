@@ -3,6 +3,7 @@ package fr.schmidt.poolapi.service;
 import fr.schmidt.poolapi.dto.request.AccessRequest;
 import fr.schmidt.poolapi.dto.response.AccessResponse;
 import fr.schmidt.poolapi.dto.response.UserResponse;
+import fr.schmidt.poolapi.exception.ResourceNotFoundException;
 import fr.schmidt.poolapi.model.entity.Access;
 import fr.schmidt.poolapi.model.entity.Pool;
 import fr.schmidt.poolapi.model.entity.User;
@@ -38,9 +39,9 @@ public class AccessService {
     // Entrer dans la piscine
     public AccessResponse entry(Long userId, AccessRequest request){
         User user = userRepository.findById(userId)
-                .orElseThrow(()->new RuntimeException("User not Found"));
+                .orElseThrow(()->new ResourceNotFoundException("User not Found"));
         Pool pool = poolRepository.findById(request.poolId())
-                .orElseThrow(()->new RuntimeException("Pool not found"));
+                .orElseThrow(()->new ResourceNotFoundException("Pool not found"));
         Access access = new Access();
         access.setUser(user);
         access.setTimestamp(LocalDateTime.now());
@@ -54,9 +55,9 @@ public class AccessService {
     // Sortir de la piscine
     public AccessResponse exit(Long userId, AccessRequest request){
         User user = userRepository.findById(userId)
-                .orElseThrow(()->new RuntimeException("User not Found"));
+                .orElseThrow(()->new ResourceNotFoundException("User not Found"));
         Pool pool = poolRepository.findById(request.poolId())
-                .orElseThrow(()->new RuntimeException("Pool not found"));
+                .orElseThrow(()->new ResourceNotFoundException("Pool not found"));
         Access access = new Access();
         access.setUser(user);
         access.setTimestamp(LocalDateTime.now());

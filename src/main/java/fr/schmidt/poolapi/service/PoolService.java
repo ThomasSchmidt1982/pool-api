@@ -2,6 +2,7 @@ package fr.schmidt.poolapi.service;
 
 import fr.schmidt.poolapi.dto.request.PoolRequest;
 import fr.schmidt.poolapi.dto.response.PoolResponse;
+import fr.schmidt.poolapi.exception.ResourceNotFoundException;
 import fr.schmidt.poolapi.model.entity.Pool;
 import fr.schmidt.poolapi.repository.PoolRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class PoolService {
         Pool pool = poolRepository.findAll()
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Pool not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pool not found"));
         return new PoolResponse(pool.getId(), pool.getMaxCapacity());
     }
 
@@ -28,7 +29,7 @@ public class PoolService {
         Pool pool = poolRepository.findAll()
                 .stream()
                 .findFirst()
-                .orElseThrow(()->new RuntimeException("Pool not found"));
+                .orElseThrow(()->new ResourceNotFoundException("Pool not found"));
         pool.setMaxCapacity(poolRequest.maxCapacity());
         return toResponse(poolRepository.save(pool));
     }

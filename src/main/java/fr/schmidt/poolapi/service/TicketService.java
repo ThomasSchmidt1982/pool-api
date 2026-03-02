@@ -4,6 +4,7 @@ import fr.schmidt.poolapi.dto.request.TicketKindRequest;
 import fr.schmidt.poolapi.dto.request.TicketRequest;
 import fr.schmidt.poolapi.dto.response.TicketKindResponse;
 import fr.schmidt.poolapi.dto.response.TicketResponse;
+import fr.schmidt.poolapi.exception.ResourceNotFoundException;
 import fr.schmidt.poolapi.model.entity.Ticket;
 import fr.schmidt.poolapi.model.entity.TicketKind;
 import fr.schmidt.poolapi.model.entity.User;
@@ -49,10 +50,10 @@ public class TicketService {
     public TicketResponse create(Long id, TicketRequest request){
         // 1. Vérifie que le user existe
         User user = userRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("User not found"));
+                .orElseThrow(()->new ResourceNotFoundException("User not found"));
         // 2. Vérifie que le type de ticket existe
         TicketKind kind = ticketKindRepository.findById(request.ticketKindId())
-                .orElseThrow(()->new RuntimeException("TicketKind not found"));
+                .orElseThrow(()->new ResourceNotFoundException("TicketKind not found"));
         // 3. Crée le ticket
         Ticket ticket = new Ticket();
         ticket.setPurchaseDate(LocalDate.now());

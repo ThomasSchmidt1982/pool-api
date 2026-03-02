@@ -4,6 +4,7 @@ import fr.schmidt.poolapi.dto.request.SubscriptionKindRequest;
 import fr.schmidt.poolapi.dto.request.SubscriptionRequest;
 import fr.schmidt.poolapi.dto.response.SubscriptionKindResponse;
 import fr.schmidt.poolapi.dto.response.SubscriptionResponse;
+import fr.schmidt.poolapi.exception.ResourceNotFoundException;
 import fr.schmidt.poolapi.model.entity.Subscription;
 import fr.schmidt.poolapi.model.entity.SubscriptionKind;
 import fr.schmidt.poolapi.model.entity.User;
@@ -49,10 +50,10 @@ public class SubscriptionService {
     public SubscriptionResponse create(Long id, SubscriptionRequest request){
         // 1. Vérifie que user existe
         User user = userRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("User not Found"));
+                .orElseThrow(()->new ResourceNotFoundException("User not Found"));
         // 2. Vérifie que le type d'abonnement existe
         SubscriptionKind kind = subscriptionKindRepository.findById(request.subscriptionKindId())
-                .orElseThrow(()->new RuntimeException("SubscriptionKind not found"));
+                .orElseThrow(()->new ResourceNotFoundException("SubscriptionKind not found"));
         // 3. crée l'abonnement
         Subscription subscription = new Subscription();
         subscription.setUser(user);

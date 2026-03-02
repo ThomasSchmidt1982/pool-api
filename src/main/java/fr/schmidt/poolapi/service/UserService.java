@@ -2,6 +2,7 @@ package fr.schmidt.poolapi.service;
 
 import fr.schmidt.poolapi.dto.request.UserRequest;
 import fr.schmidt.poolapi.dto.response.UserResponse;
+import fr.schmidt.poolapi.exception.ResourceNotFoundException;
 import fr.schmidt.poolapi.model.entity.User;
 import fr.schmidt.poolapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class UserService {
     // GET /users/:id
     public UserResponse findById(Long id){
         User user = userRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("User not found"));
         return toResponse(user);
     }
 
@@ -49,7 +50,7 @@ public class UserService {
     // PUT /users/:id
     public UserResponse update(Long id, UserRequest userRequest){
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setLastname(userRequest.lastname());
         user.setFirstname(userRequest.firstname());
         user.setEmail(userRequest.email());
@@ -62,7 +63,7 @@ public class UserService {
     // DELETE /users/:id (soft delete)
     public void deactivate(Long id){
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setActive(false);
         userRepository.save(user);
     }
