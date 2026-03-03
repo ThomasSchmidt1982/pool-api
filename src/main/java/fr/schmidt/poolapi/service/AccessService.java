@@ -4,6 +4,7 @@ import fr.schmidt.poolapi.dto.request.AccessRequest;
 import fr.schmidt.poolapi.dto.response.AccessResponse;
 import fr.schmidt.poolapi.dto.response.UserResponse;
 import fr.schmidt.poolapi.exception.ResourceNotFoundException;
+import fr.schmidt.poolapi.exception.BadRequestException;
 import fr.schmidt.poolapi.model.entity.Access;
 import fr.schmidt.poolapi.model.entity.Pool;
 import fr.schmidt.poolapi.model.entity.User;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,12 +44,16 @@ public class AccessService {
                 .orElseThrow(()->new ResourceNotFoundException("User not Found"));
         Pool pool = poolRepository.findById(request.poolId())
                 .orElseThrow(()->new ResourceNotFoundException("Pool not found"));
-        Access access = new Access();
-        access.setUser(user);
-        access.setTimestamp(LocalDateTime.now());
-        access.setPool(pool);
-        access.setInOut(InOut.ENTRY);
-        return toResponse(accessRepository.save(access));
+        Optional<Access> lastAccess = accessRepository.findTopByUserIdOrderByTimestampDesc(userId);
+                if(lastAccess.isPresent() && lastAccess.get().getInOut() == InOut.ENTRY){
+                    throw new BadRequestException("User is already inside");
+                }
+            Access access = new Access();
+            access.setUser(user);
+            access.setTimestamp(LocalDateTime.now());
+            access.setPool(pool);
+            access.setInOut(InOut.ENTRY);
+            return toResponse(accessRepository.save(access));
     }
 
 
@@ -58,6 +64,10 @@ public class AccessService {
                 .orElseThrow(()->new ResourceNotFoundException("User not Found"));
         Pool pool = poolRepository.findById(request.poolId())
                 .orElseThrow(()->new ResourceNotFoundException("Pool not found"));
+        Optional<Access> lastAccess = accessRepository.findTopByUserIdOrderByTimestampDesc(userId);
+        if(lastAccess.isPresent() && lastAccess.get().getInOut() == InOut.EXIT){
+            throw new BadRequestException("User is not inside");
+        }
         Access access = new Access();
         access.setUser(user);
         access.setTimestamp(LocalDateTime.now());
