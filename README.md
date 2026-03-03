@@ -1,59 +1,55 @@
 # Pool API
 
-## 🇫🇷 Français
+API REST de gestion de piscine développée avec Spring Boot 3.4.3.
 
-### Description
-API REST de gestion d'accès à une piscine, développée avec Java Spring Boot. Ce projet permet de gérer les abonnés, les employés, les abonnements, les tickets et les accès à la piscine.
+## Technologies
 
-### Fonctionnalités
-- Gestion des utilisateurs (abonnés) et des employés
-- Gestion des abonnements et tickets d'entrée
-- Contrôle des accès (entrée / sortie)
-- Gestion de la capacité maximale de la piscine
-- Sécurisation des endpoints par rôle (USER, EMPLOYEE, ADMIN)
-
-### Stack technique
 - Java 21
-- Spring Boot 4
-- Spring Security (JWT - à venir)
+- Spring Boot 3.4.3
+- Spring Security + JWT
 - Spring Data JPA / Hibernate
 - PostgreSQL
 - Lombok
-- Swagger / OpenAPI
+- JavaFaker (données de test)
+- Springdoc OpenAPI (Swagger)
 
-### Lancer le projet
-1. Cloner le repository
-2. Copier `application.properties.example` en `application.properties` et renseigner vos identifiants PostgreSQL
-3. Créer une base de données `pool_db` sur votre instance PostgreSQL
-4. Lancer l'application avec `mvn spring-boot:run`
-5. Accéder à la documentation Swagger : `http://localhost:8080/swagger-ui.html`
+## Prérequis
 
----
-
-## 🇬🇧 English
-
-### Description
-REST API for managing pool access, built with Java Spring Boot. This project handles subscribers, employees, subscriptions, tickets, and pool access control.
-
-### Features
-- User (subscriber) and employee management
-- Subscription and entry ticket management
-- Access control (entry / exit)
-- Pool maximum capacity management
-- Role-based endpoint security (USER, EMPLOYEE, ADMIN)
-
-### Tech stack
 - Java 21
-- Spring Boot 4
-- Spring Security (JWT - coming soon)
-- Spring Data JPA / Hibernate
 - PostgreSQL
-- Lombok
-- Swagger / OpenAPI
+- Maven
 
-### Run the project
-1. Clone the repository
-2. Copy `application.properties.example` to `application.properties` and fill in your PostgreSQL credentials
-3. Create a `pool_db` database on your PostgreSQL instance
-4. Run the application with `mvn spring-boot:run`
-5. Access Swagger documentation at `http://localhost:8080/swagger-ui.html`
+## Installation
+
+1. Cloner le dépôt
+2. Créer une base de données PostgreSQL `pool_db`
+3. Configurer `application.properties` :
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/pool_db
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
+jwt.secret=YOUR_SECRET
+jwt.expiration=86400000
+```
+4. Lancer l'application — les tables et données de test sont créées automatiquement
+
+## Documentation API
+
+Swagger disponible sur `http://localhost:8080/swagger-ui/index.html`
+
+## Authentification
+
+Toutes les routes (sauf `/auth/login`) nécessitent un token JWT.
+```
+POST /auth/login
+{
+    "email": "jean.dupont@mail.com",
+    "password": "motdepasse123"
+}
+```
+
+## Rôles
+
+- **ADMIN** — accès complet
+- **EMPLOYEE** — gestion des users
+- **USER** — accès à ses propres données
