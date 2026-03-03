@@ -44,6 +44,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/pool").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/pool/status").hasRole("ADMIN")
 
+                        // Tous les authentifiés (càd avec token)
+                        .requestMatchers(HttpMethod.GET, "/subscriptions/kinds").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/tickets/kinds").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/access/entry").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/access/exit").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/subscriptions").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/users/subscriptions").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/tickets").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/users/tickets").authenticated()
+
                         // Admin + Employee
                         .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "EMPLOYEE")
                         .requestMatchers(HttpMethod.POST, "/users").hasAnyRole("ADMIN", "EMPLOYEE")
@@ -51,11 +61,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyRole("ADMIN", "EMPLOYEE")
                         .requestMatchers(HttpMethod.GET, "/access").hasAnyRole("ADMIN", "EMPLOYEE")
 
-                        // Tous les authentifiés (càd avec token)
-                        .requestMatchers(HttpMethod.GET, "/subscriptions/kinds").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/tickets/kinds").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/access/entry/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/access/exit/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 // pas de session HTTP - chaque requête est indépendante
