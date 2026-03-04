@@ -4,6 +4,8 @@ import fr.schmidt.poolapi.dto.request.PoolRequest;
 import fr.schmidt.poolapi.dto.response.PoolResponse;
 import fr.schmidt.poolapi.exception.ResourceNotFoundException;
 import fr.schmidt.poolapi.model.entity.Pool;
+import fr.schmidt.poolapi.model.enums.InOut;
+import fr.schmidt.poolapi.repository.AccessRepository;
 import fr.schmidt.poolapi.repository.PoolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ public class PoolService {
 
     // injection de dépendance
     private final PoolRepository poolRepository;
+    private final AccessRepository accessRepository;
 
     // GET /pool/status
     public  PoolResponse getStatus() {
@@ -21,7 +24,7 @@ public class PoolService {
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Pool not found"));
-        return new PoolResponse(pool.getId(), pool.getMaxCapacity());
+        return toResponse(pool);
     }
 
     // PUT /pool
@@ -35,7 +38,11 @@ public class PoolService {
     }
 
     private PoolResponse toResponse(Pool pool){
-        return new PoolResponse(pool.getId(), pool.getMaxCapacity());
+        int entries = accessRepository.countByInOut(InOut.ENTRY);
+        int exits = accessRepository.countByInOut(InOut.EXIT);
+        int occupancy = entries - exits;
+        int currentCapacity = pool.getMaxCapacity()-(entries - exits);
+        return new PoolResponse(pool.getId(), pool.getMaxCapacity(), occupancy, currentCapacity);
     }
 
 }
