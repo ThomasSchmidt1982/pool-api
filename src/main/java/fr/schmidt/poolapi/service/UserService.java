@@ -1,7 +1,9 @@
 package fr.schmidt.poolapi.service;
 
+import fr.schmidt.poolapi.dto.request.ChangePasswordRequest;
 import fr.schmidt.poolapi.dto.request.UserRequest;
 import fr.schmidt.poolapi.dto.response.UserResponse;
+import fr.schmidt.poolapi.exception.BadRequestException;
 import fr.schmidt.poolapi.exception.ResourceNotFoundException;
 import fr.schmidt.poolapi.model.entity.User;
 import fr.schmidt.poolapi.repository.UserRepository;
@@ -58,6 +60,17 @@ public class UserService {
         user.setActive(userRequest.isActive());
         // Sauvegarde les modifs et retourne la réponse
         return toResponse(userRepository.save(user));
+    }
+
+    // PUT /password/:id
+    public void changePassword(Long id, ChangePasswordRequest request){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())){
+            throw new BadRequestException("Invalid password");
+        }
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
     }
 
     // DELETE /users/:id (soft delete)

@@ -1,12 +1,16 @@
 package fr.schmidt.poolapi.controller;
 
+import fr.schmidt.poolapi.dto.request.ChangePasswordRequest;
 import fr.schmidt.poolapi.dto.request.UserRequest;
 import fr.schmidt.poolapi.dto.response.UserResponse;
+import fr.schmidt.poolapi.model.entity.Person;
 import fr.schmidt.poolapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +41,12 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> update(@PathVariable Long id, @Valid @RequestBody UserRequest request){
         return ResponseEntity.ok(userService.update(id, request));
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<Void> changePassword(@AuthenticationPrincipal Person person, @Valid @RequestBody ChangePasswordRequest request){
+        userService.changePassword(person.getId(), request);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
