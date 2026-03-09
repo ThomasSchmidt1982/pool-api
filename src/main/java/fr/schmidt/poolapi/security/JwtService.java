@@ -1,5 +1,6 @@
 package fr.schmidt.poolapi.security;
 
+import fr.schmidt.poolapi.model.entity.Person;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -23,8 +24,12 @@ public class JwtService {
 
     //Génère un token JWT pour un user
     public String generateToken(UserDetails userDetails){
+        Person person = (Person) userDetails;
         return Jwts.builder()
                 .subject(userDetails.getUsername())
+                .claim("firstname", person.getFirstname())
+                .claim("lastname", person.getLastname())
+                .claim("role", person.getAuthorities().iterator().next().getAuthority())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignKey())

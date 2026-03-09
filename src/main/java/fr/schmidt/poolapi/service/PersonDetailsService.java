@@ -18,8 +18,13 @@ public class PersonDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Cherche d'abord dans les users
-        return userRepository.findByEmail(email)
-                .or(() -> employeeRepository.findByEmail(email))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+        var user = userRepository.findByEmail(email);
+        if (user.isPresent()) return user.get();
+
+        // puis cherche dans les employee
+        var employee = employeeRepository.findByEmail(email);
+        if (employee.isPresent()) return employee.get();
+
+        throw new UsernameNotFoundException("User not found: " + email);
     }
 }

@@ -55,10 +55,21 @@ public class DataSeeder implements ApplicationRunner {
         // Users
         for (int i = 0; i < 50 ; i++) {
             User user = new User();
-            user.setFirstname(faker.name().firstName());
-            user.setLastname(faker.name().lastName());
-            user.setEmail(faker.internet().emailAddress());
-            user.setPhone(faker.phoneNumber().cellPhone());
+            String firstname = faker.name().firstName();
+            String lastname = faker.name().lastName();
+            String email = (firstname + "." + lastname + "@gmail.com")
+                    .toLowerCase()
+                    .replaceAll("[éèêë]", "e")
+                    .replaceAll("[àâä]", "a")
+                    .replaceAll("[îï]", "i")
+                    .replaceAll("[ôö]", "o")
+                    .replaceAll("[ùûü]", "u")
+                    .replaceAll("[ç]", "c")
+                    .replaceAll(" ", ".");
+
+            user.setFirstname(firstname);
+            user.setLastname(lastname);
+            user.setEmail(email);            user.setPhone(faker.phoneNumber().cellPhone());
             user.setPassword(passwordEncoder.encode(seederPassword));
             user.setAdmin(false);
             user.setActive(faker.bool().bool());
@@ -68,9 +79,21 @@ public class DataSeeder implements ApplicationRunner {
         // Employees
         for (int i = 0; i < 15; i++) {
             Employee employee = new Employee();
-            employee.setFirstname(faker.name().firstName());
-            employee.setLastname(faker.name().lastName());
-            employee.setEmail(faker.internet().emailAddress());
+            String firstname = faker.name().firstName();
+            String lastname = faker.name().lastName();
+            String email = (firstname + "." + lastname + "@gmail.com")
+                    .toLowerCase()
+                    .replaceAll("[éèêë]", "e")
+                    .replaceAll("[àâä]", "a")
+                    .replaceAll("[îï]", "i")
+                    .replaceAll("[ôö]", "o")
+                    .replaceAll("[ùûü]", "u")
+                    .replaceAll("[ç]", "c")
+                    .replaceAll(" ", ".");
+
+            employee.setFirstname(firstname);
+            employee.setLastname(lastname);
+            employee.setEmail(email);
             employee.setPhone(faker.phoneNumber().cellPhone());
             employee.setPassword(passwordEncoder.encode(seederPassword));
             employee.setAdmin(false);

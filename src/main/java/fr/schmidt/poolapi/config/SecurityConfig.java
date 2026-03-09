@@ -62,7 +62,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/subscriptions/kinds").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/tickets/kinds").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/pool").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/pool/status").hasRole("ADMIN")
 
                         // Tous les authentifiés (càd avec token)
                         .requestMatchers(HttpMethod.GET, "/subscriptions/kinds").authenticated()
@@ -74,6 +73,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/tickets").authenticated()
                         .requestMatchers(HttpMethod.POST, "/users/tickets").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/users/password").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/pool/status").authenticated()
 
                         // Admin + Employee
                         .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "EMPLOYEE")
