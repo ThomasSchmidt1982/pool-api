@@ -14,18 +14,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users/tickets")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class TicketController {
     private final TicketService ticketService;
 
-    @GetMapping
+    @GetMapping("/tickets")
     public ResponseEntity<List<TicketResponse>> findByUserId(@AuthenticationPrincipal Person person){
         return ResponseEntity.ok(ticketService.findByUserId(person.getId()));
     }
 
-    @PostMapping
+    @PostMapping("/tickets")
     public ResponseEntity<TicketResponse> create(@AuthenticationPrincipal Person person, @Valid @RequestBody TicketRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.create(person.getId(), request ));
     }
+
 }

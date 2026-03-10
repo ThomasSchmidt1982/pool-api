@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record TicketRequest(
-        @NotNull LocalDateTime usingDate,
+        LocalDateTime usingDate,
         @NotNull Long ticketKindId
 ) {
 }
