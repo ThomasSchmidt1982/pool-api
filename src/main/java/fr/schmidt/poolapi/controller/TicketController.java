@@ -29,4 +29,11 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.create(person.getId(), request ));
     }
 
+    @PostMapping("/{userId}/tickets")
+    public ResponseEntity<TicketResponse> sellToUser(@PathVariable Long userId, @Valid @RequestBody TicketRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.create(userId, request));
+    }
+
+
+
 }

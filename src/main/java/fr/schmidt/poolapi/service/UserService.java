@@ -36,6 +36,14 @@ public class UserService {
         return toResponse(user);
     }
 
+    // GET /users/search
+    public List<UserResponse> search(String q){
+        return userRepository.findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCase(q, q)
+                .stream()
+                .map(user -> toResponse(user))
+                .toList();
+    }
+
     // POST /users
     public UserResponse create(UserRequest userRequest){
         User user = new User();

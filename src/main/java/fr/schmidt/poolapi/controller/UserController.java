@@ -33,6 +33,11 @@ public class UserController {
         return ResponseEntity.ok(userService.findById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<UserResponse>> search(@RequestParam String q) {
+        return ResponseEntity.ok(userService.search(q));
+    }
+
     @PostMapping
     public ResponseEntity<UserResponse> create(@Valid @RequestBody UserRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(request));
