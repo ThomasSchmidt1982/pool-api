@@ -53,7 +53,7 @@ public class DataSeeder implements ApplicationRunner {
         ));
 
         // Users
-        for (int i = 0; i < 50 ; i++) {
+        for (int i = 0; i < 25 ; i++) {
             User user = new User();
             String firstname = faker.name().firstName();
             String lastname = faker.name().lastName();
@@ -77,7 +77,7 @@ public class DataSeeder implements ApplicationRunner {
         }
 
         // Employees
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 10; i++) {
             Employee employee = new Employee();
             String firstname = faker.name().firstName();
             String lastname = faker.name().lastName();
