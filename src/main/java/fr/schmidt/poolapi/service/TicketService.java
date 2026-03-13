@@ -85,6 +85,7 @@ public class TicketService {
     private TicketResponse toResponse(Ticket ticket){
         return new TicketResponse(
                 ticket.getId(),
+                ticket.getUser().getId(),
                 ticket.getPurchaseDate(),
                 ticket.getUsingDate(),
                 toKindResponse(ticket.getTicketKind())

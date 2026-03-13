@@ -29,20 +29,18 @@ public class AccessController {
 
     @PostMapping("/entry")
     public ResponseEntity<AccessResponse> entry(
-            @AuthenticationPrincipal Person person,
             @Valid @RequestBody AccessRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(accessService.entry(person.getId(), request));
+                .body(accessService.entry(request));
     }
 
     @PostMapping("/exit")
     public ResponseEntity<AccessResponse> exit(
-            @AuthenticationPrincipal Person person,
             @Valid @RequestBody AccessRequest request) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(accessService.exit(person.getId(), request));
+                .body(accessService.exit(request));
     }
 
 }
