@@ -71,9 +71,7 @@ public class UserServiceTest {
                 "Dupont",
                 "Jean",
                 "jean@mail.com",
-                "motdepasse123",
-                false,
-                true
+                "motdepasse123"
         );
         when(passwordEncoder.encode("motdepasse123")).thenReturn("hashedPassword");
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
