@@ -51,8 +51,8 @@ public class UserService {
         user.setFirstname(userRequest.firstname());
         user.setEmail(userRequest.email());
         user.setPassword(passwordEncoder.encode(userRequest.password()));
-        user.setAdmin(userRequest.isAdmin());
-        user.setActive(userRequest.isActive());
+        user.setAdmin(false);
+        user.setActive(true);
         // sauvegarde en BDD et retourne la réponse
         return toResponse(userRepository.save(user));
     }
@@ -64,8 +64,8 @@ public class UserService {
         user.setLastname(userRequest.lastname());
         user.setFirstname(userRequest.firstname());
         user.setEmail(userRequest.email());
-        user.setAdmin(userRequest.isAdmin());
-        user.setActive(userRequest.isActive());
+        // user.setAdmin(userRequest.isAdmin()); todo fonction setAdmin(true/false)
+        // user.setActive(userRequest.isActive()); todo fonction setActive(true/false)
         // Sauvegarde les modifs et retourne la réponse
         return toResponse(userRepository.save(user));
     }
