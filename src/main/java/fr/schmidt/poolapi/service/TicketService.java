@@ -63,7 +63,7 @@ public class TicketService {
         return toResponse(ticketRepository.save(ticket));
     }
 
-    // GET /users/tickets
+    // GET /tickets
     // Retourne la liste de tous les tickets
     public List<TicketResponse> findAll(){
         return ticketRepository.findAll()
