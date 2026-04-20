@@ -29,7 +29,6 @@ public class AccessService {
     // injections de dépendances
     private final PoolRepository poolRepository;
     private final AccessRepository accessRepository;
-    private final UserRepository userRepository;
     private final TicketRepository ticketRepository;
 
     // GET /access
