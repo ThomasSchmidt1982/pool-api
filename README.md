@@ -5,8 +5,8 @@ API REST de gestion de piscine développée avec Spring Boot 3.4.3.
 ![swagger.png](documents/swagger.png)
 
 
-🌐 **API en ligne** : [https://pool-api-baic.onrender.com](https://pool-api-baic.onrender.com)  
-📖 **Swagger** : [https://pool-api-baic.onrender.com/swagger-ui/index.html](https://pool-api-baic.onrender.com/swagger-ui/index.html)
+🌐 **API en ligne** : [https://pool-api.thomasschmidt.fr](https://pool-api.thomasschmidt.fr)  
+📖 **Swagger** : [https://pool-api.thomasschmidt/swagger-ui/index.html](https://pool-api.thomasschmidt.fr/swagger-ui/index.html)
 
 > ⚠️ L'API peut mettre quelques secondes à répondre lors de la première requête (réveil du service Render).
 
